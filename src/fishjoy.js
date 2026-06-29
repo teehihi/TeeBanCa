@@ -14,8 +14,8 @@ var ns = Q.use("fish");
 var game = ns.game = 
 {	
 	container: null,
-	width: 480,
-	height: 320,
+	width: 1024,
+	height: 768,
 	fps: 60,
 	frames: 0,
 	params: null,
@@ -33,17 +33,10 @@ game.load = function(container)
 	if(params.fps) this.fps = params.fps;
 	this.fireInterval = this.fps*0.5;
 	
-	if(Q.isIpod || Q.isIphone)
-	{
-		this.width = 980;
-		this.height = 545;
-		Q.addMeta({name:"viewport", content:"user-scalable=no"});
-	}else
-	{		
-		Q.addMeta({name:"viewport", content:"user-scalable=no, initial-scale=1.0, minimum-scale=1, maximum-scale=1"});
-		this.width = Math.min(1024, window.innerWidth);
-		this.height = Math.min(768, window.innerHeight);
-	}
+	// Assets của game được thiết kế theo khung 1024x768. Giữ hệ tọa độ cố định
+	// và để lớp giao diện bên ngoài scale toàn bộ game giúp hình ảnh không bị lệch.
+	this.width = 1024;
+	this.height = 768;
 
 	if(params.width) this.width = Number(params.width) || this.width;
 	if(params.height) this.height = Number(params.height) || this.height;
@@ -56,21 +49,7 @@ game.load = function(container)
 	this.screenWidth = window.innerWidth;
 	this.screenHeight = window.innerHeight;
 	
-	//load info
-	var div = Q.createDOM("div", {innerHTML: "Đang tải game, vui lòng chờ...<br>", style:
-	{
-		id: "loader",
-		position: "absolute",
-		width: this.width + "px",
-		left: "0px",
-		top: (this.height >> 1) + "px",
-		textAlign: "center",
-		color: "#fff",
-		font: Q.isMobile ?  'bold 16px Đen' : 'bold 16px Times New Roman',
-		textShadow: "0 2px 2px #111"
-	}});
-	this.container.appendChild(div);
-	this.loader = div;
+	this.loader = Q.getDOM("loading-screen");
     
     //hide nav bar
     this.hideNavBar();
@@ -92,8 +71,9 @@ game.load = function(container)
 
 game.onLoadLoaded = function(e)
 {
-	var content = "Đang tải game, vui lòng chờ...<br>(" + Math.round(e.target.getLoadedSize()/e.target.getTotalSize()*100) + "%)";
-	this.loader.innerHTML = content;
+	var percent = Math.round(e.target.getLoadedSize()/e.target.getTotalSize()*100);
+	Q.getDOM("progress-bar").style.width = percent + "%";
+	Q.getDOM("loading-text").innerHTML = "Đang chuẩn bị đại dương... " + percent + "%";
 };
 
 game.onLoadComplete = function(e)
@@ -105,13 +85,36 @@ game.onLoadComplete = function(e)
 game.init = function(images)
 {
 	ns.R.init(images);
-	this.startup();
+	Q.getDOM("progress-bar").style.width = "100%";
+	Q.getDOM("loading-text").innerHTML = "Đã sẵn sàng!";
+	var me = this;
+	setTimeout(function(){
+		Q.getDOM("loading-screen").className += " is-hidden";
+		Q.getDOM("menu-screen").className = "screen";
+		me.ready = true;
+	}, 350);
+};
+
+game.startGame = function()
+{
+	if(!this.ready) return;
+	Q.getDOM("menu-screen").className = "screen is-hidden";
+	Q.getDOM("game-hud").className = "is-visible";
+	if(!this.started){ this.started = true; this.startup(); }
+	else { this.fishManager.enabled = true; this.timer.start(); }
+};
+
+game.showMenu = function()
+{
+	if(this.timer) this.timer.stop();
+	if(this.fishManager) this.fishManager.enabled = false;
+	Q.getDOM("game-hud").className = "";
+	Q.getDOM("menu-screen").className = "screen";
 };
 
 game.startup = function()
 {
 	var me = this;
-	this.container.removeChild(this.loader);
 	this.loader = null;
 	
 	

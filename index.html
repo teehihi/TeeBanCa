@@ -1,53 +1,557 @@
 <!doctype html>
+<html lang="vi">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="apple-touch-icon" href="images/icon.png"/>
-<link rel="apple-touch-startup-image" href="images/icon.png" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="theme-color" content="#032b4d" />
+	<title>Đại Dương Săn Cá</title>
+	<style>
+		:root {
+			--cyan: #63f5ff;
+			--blue: #087dcc;
+			--navy: #031a34;
+			--gold: #ffd75a
+		}
 
-<style type="text/css">
-body, div, canvas
-{
-    image-rendering: optimizeSpeed;
-    -webkit-image-rendering: optimizeSpeed;
-    -webkit-interpolation-mode: nearest-neighbor;
-}
-body{padding:0; margin:0;font-size:12px;background-color:#000;}
-body, html{height: 100%;}
-#outer{height:100%; overflow:hidden; position:relative; width:100%;}
-#outer[id]{display:table; position:static;}
-#middle{position:absolute; top:50%;} /* for ie only*/
-#middle[id]{display:table-cell; vertical-align:middle; position:static;}
-</style>
+		* {
+			box-sizing: border-box;
+			-webkit-tap-highlight-color: transparent
+		}
 
-<title>Câu cá</title>
+		html,
+		body {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			overflow: hidden;
+			background: #020d1b;
+			font-family: Arial, "Helvetica Neue", sans-serif;
+			color: #fff
+		}
 
-<script type="text/javascript" src="js/quark.base-1.0.0.alpha.min.js"></script>
-<!--<script type="text/javascript" src="fishjoy.game.js"></script>-->
-<script type="text/javascript" src="src/R.js"></script>
-<script type="text/javascript" src="src/Utils.js"></script>
-<script type="text/javascript" src="src/fishjoy.js"></script>
-<script type="text/javascript" src="src/FishManager.js"></script>
-<script type="text/javascript" src="src/FishGroup.js"></script>
-<script type="text/javascript" src="src/views/Fish.js"></script>
-<script type="text/javascript" src="src/views/Cannon.js"></script>
-<script type="text/javascript" src="src/views/Bullet.js"></script>
-<script type="text/javascript" src="src/views/Num.js"></script>
-<script type="text/javascript" src="src/views/Player.js"></script>
+		body {
+			background: radial-gradient(circle at 50% 30%, #0a527d 0, #021426 65%, #010813 100%)
+		}
 
+		button {
+			font: inherit
+		}
+
+		#viewport {
+			position: fixed;
+			inset: 0;
+			overflow: hidden
+		}
+
+		#game-shell {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1024px;
+			height: 768px;
+			overflow: hidden;
+			background: #063b62;
+			transform-origin: top left
+		}
+
+		#viewport:before {
+			position: absolute;
+			inset: 0;
+			content: "";
+			background: radial-gradient(circle at 50% 25%, #1479a7 0, #04233e 50%, #010711 100%);
+		}
+
+		#container {
+			position: absolute;
+			inset: 0;
+			width: 1024px;
+			height: 768px;
+			overflow: hidden
+		}
+
+		#game-vignette {
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			z-index: 20;
+			box-shadow: inset 0 0 90px #00122590
+		}
+
+		.screen {
+			position: absolute;
+			inset: 0;
+			z-index: 100;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: opacity .35s ease, visibility .35s ease
+		}
+
+		.screen.is-hidden {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none
+		}
+
+		#loading-screen {
+			background: linear-gradient(180deg, #042c4d 0%, #075c82 56%, #043451 100%)
+		}
+
+		.bubble-field,
+		.bubble-field:before,
+		.bubble-field:after {
+			position: absolute;
+			inset: 0;
+			content: "";
+			background-image: radial-gradient(circle, #a9f6ff90 0 3px, transparent 4px);
+			background-size: 120px 120px;
+			animation: float 9s linear infinite
+		}
+
+		.bubble-field:before {
+			background-size: 190px 190px;
+			transform: translate(45px, 20px);
+			animation-duration: 14s
+		}
+
+		.bubble-field:after {
+			background-size: 270px 270px;
+			transform: translate(10px, 80px);
+			animation-duration: 20s
+		}
+
+		@keyframes float {
+			to {
+				background-position: 0 -240px
+			}
+		}
+
+		.loader-card {
+			text-align: center;
+			z-index: 1;
+			width: min(520px, 80%)
+		}
+
+		.loader-logo {
+			font-size: 54px;
+			font-weight: 900;
+			letter-spacing: 2px;
+			color: #fff;
+			text-shadow: 0 4px 0 #087db6, 0 8px 20px #00182e
+		}
+
+		.loader-fish {
+			font-size: 72px;
+			display: block;
+			animation: swim 1.8s ease-in-out infinite
+		}
+
+		@keyframes swim {
+			50% {
+				transform: translateX(28px) rotate(-4deg)
+			}
+		}
+
+		.progress-track {
+			height: 18px;
+			margin-top: 28px;
+			padding: 3px;
+			border-radius: 99px;
+			background: #001a30aa;
+			border: 1px solid #9af7ff88;
+			box-shadow: inset 0 2px 8px #0008
+		}
+
+		#progress-bar {
+			width: 0;
+			height: 100%;
+			border-radius: 99px;
+			background: linear-gradient(90deg, #20c9ff, #78ffcf);
+			box-shadow: 0 0 16px #58faff;
+			transition: width .18s
+		}
+
+		#loading-text {
+			margin: 14px 0 0;
+			color: #d6fbff;
+			font-weight: 700;
+			letter-spacing: .5px
+		}
+
+		#menu-screen {
+			align-items: stretch;
+			justify-content: flex-start;
+			background: linear-gradient(90deg, rgba(1, 13, 34, .86) 0%, rgba(2, 30, 60, .48) 51%, rgba(0, 17, 38, .18) 100%), linear-gradient(180deg, transparent 55%, rgba(0, 12, 29, .72)), url("images/startbg.jpg") center/cover
+		}
+
+		.menu-shell {
+			position: relative;
+			z-index: 2;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 520px;
+			height: 100%;
+			padding: 44px 0 72px 64px
+		}
+
+		.menu-kicker {
+			display: inline-flex;
+			align-items: center;
+			gap: 9px;
+			width: max-content;
+			margin-bottom: 17px;
+			padding: 8px 14px;
+			border: 1px solid #8cf8ff5c;
+			border-radius: 99px;
+			background: #072e4db8;
+			box-shadow: inset 0 1px #b8fbff45;
+			color: #bffbff;
+			font-size: 12px;
+			font-weight: 800;
+			letter-spacing: 2px;
+			text-transform: uppercase
+		}
+
+		.menu-kicker:before {
+			width: 8px;
+			height: 8px;
+			content: "";
+			border-radius: 50%;
+			background: #6dffbd;
+			box-shadow: 0 0 12px #6dffbd
+		}
+
+		#menu-screen:after {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			width: 1024px;
+			height: 103px;
+			content: "";
+			background: url("images/bottom.png") left bottom/1024px auto no-repeat;
+			filter: drop-shadow(0 -8px 14px #00122580);
+			pointer-events: none
+		}
+
+		.menu-card {
+			position: relative;
+			width: 456px;
+			text-align: left;
+			padding: 0;
+		}
+
+		.menu-card:before {
+			display: none
+		}
+
+		.eyebrow {
+			margin: 0;
+			color: var(--cyan);
+			font-weight: 800;
+			letter-spacing: 5px;
+			text-transform: uppercase;
+			font-size: 13px
+		}
+
+		.game-title {
+			margin: 0;
+			font-size: 66px;
+			line-height: .86;
+			text-transform: uppercase;
+			color: #fff;
+			-webkit-text-stroke: 2px #063467;
+			text-shadow: 0 4px 0 #078ac1, 0 7px 0 #03284c, 0 12px 22px #000b
+		}
+
+		.game-title span {
+			display: inline-block;
+			color: var(--gold);
+			font-size: 61px;
+			margin-top: 11px;
+			-webkit-text-stroke: 1px #8b4300;
+			text-shadow: 0 3px 0 #b35d00, 0 6px 12px #001a38
+		}
+
+		.menu-copy {
+			color: #e4fbff;
+			margin: 25px 0 22px;
+			max-width: 430px;
+			font-size: 16px;
+			line-height: 1.65;
+			text-shadow: 0 2px 8px #001428
+		}
+
+		.feature-row {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 22px
+		}
+
+		.feature-chip {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			padding: 9px 12px;
+			border: 1px solid #9eeeff3d;
+			border-radius: 12px;
+			background: #032442a6;
+			color: #dffcff;
+			font-size: 12px;
+			font-weight: 800;
+			box-shadow: inset 0 1px #ffffff18
+		}
+
+		.feature-chip b { color: #ffd968; font-size: 16px }
+
+		.primary-btn {
+			width: 330px;
+			height: 76px;
+			border: 0;
+			padding: 0 58px 2px;
+			color: #ffe79a;
+			font-weight: 900;
+			font-size: 20px;
+			text-transform: uppercase;
+			letter-spacing: 1.5px;
+			cursor: pointer;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			text-shadow: 0 3px 2px #001225, 0 0 10px #39dfff77;
+			transition: transform .15s, filter .15s
+		}
+
+		.primary-btn:hover {
+			filter: brightness(1.16);
+			transform: scale(1.025)
+		}
+
+		.primary-btn:active {
+			transform: scale(.98)
+		}
+
+		.menu-actions {
+			display: flex;
+			gap: 12px;
+			margin: 15px auto 0;
+			width: 330px
+		}
+
+		.icon-btn {
+			flex: 1;
+			height: 52px;
+			border: 0;
+			padding: 0 16px 1px;
+			color: #ffe79a;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			cursor: pointer;
+			font-weight: 900;
+			font-size: 14px;
+			text-shadow: 0 2px 2px #001225, 0 0 7px #39dfff77;
+			transition: transform .15s, filter .15s
+		}
+
+		.fish-silhouette {
+			position: absolute;
+			right: 95px;
+			top: 210px;
+			z-index: 1;
+			width: 174px;
+			height: 126px;
+			background: url("images/fish8.png") 0 0/174px auto no-repeat;
+			filter: drop-shadow(0 18px 14px #001b34aa) drop-shadow(0 0 16px #55dfff66);
+			animation: heroFish 4.5s ease-in-out infinite
+		}
+
+		@keyframes heroFish {
+			50% { transform: translate(-24px, -14px) rotate(-3deg) }
+		}
+
+		.help-modal {
+			position: absolute;
+			inset: 0;
+			z-index: 150;
+			display: grid;
+			place-items: center;
+			background: #001021b8;
+			backdrop-filter: blur(7px);
+			transition: opacity .2s, visibility .2s
+		}
+
+		.help-modal.is-hidden { opacity: 0; visibility: hidden; pointer-events: none }
+
+		.help-panel {
+			width: 470px;
+			padding: 30px;
+			border: 2px solid #54e5ef80;
+			border-radius: 25px;
+			background: linear-gradient(160deg, #0b5275f5, #032442f7);
+			box-shadow: 0 24px 60px #0009, inset 0 1px #bffaff80
+		}
+
+		.help-panel h2 { margin: 0 0 20px; color: #ffd75a; font-size: 28px }
+		.help-step { display: flex; gap: 15px; align-items: center; margin: 13px 0; color: #e8fdff; line-height: 1.4 }
+		.help-step span { flex: 0 0 42px; display: grid; place-items: center; height: 42px; border-radius: 13px; background: #0b8fc0; font-size: 20px; box-shadow: inset 0 1px #aefaff80 }
+		.close-help { width: 100%; height: 49px; margin-top: 16px; border: 1px solid #fff1a4; border-radius: 14px; background: linear-gradient(#ffe96c, #ed9f13); color: #542500; cursor: pointer; font-weight: 900; font-size: 15px }
+
+		.icon-btn:hover {
+			filter: brightness(1.16);
+			transform: scale(1.035)
+		}
+
+		.icon-btn:active {
+			transform: scale(.97)
+		}
+
+		#game-hud {
+			position: absolute;
+			inset: 0;
+			z-index: 30;
+			pointer-events: none;
+			opacity: 0;
+			transition: opacity .3s
+		}
+
+		#game-hud.is-visible {
+			opacity: 1
+		}
+
+		.hud-top {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 18px 22px;
+			background: linear-gradient(180deg, #00172dbd, transparent)
+		}
+
+		.hud-brand {
+			font-weight: 900;
+			letter-spacing: 1.5px;
+			text-shadow: 0 2px 5px #000
+		}
+
+		.hud-brand span {
+			color: var(--gold)
+		}
+
+		.hud-btn {
+			pointer-events: auto;
+			width: 190px;
+			height: 50px;
+			border: 0;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			color: #f9e7a1;
+			padding: 0 34px 1px;
+			cursor: pointer;
+			font-weight: 900;
+			font-size: 17px;
+			letter-spacing: 1.5px;
+			text-transform: uppercase;
+			text-shadow: 0 2px 2px #001225, 0 0 8px #39dfff88;
+			transition: transform .15s, filter .15s
+		}
+
+		.hud-btn:hover {
+			filter: brightness(1.15);
+			transform: scale(1.04)
+		}
+
+		.hud-btn:active {
+			transform: scale(.97)
+		}
+
+		#fps {
+			display: none
+		}
+
+	</style>
+	<script src="js/quark.base-1.0.0.alpha.min.js"></script>
+	<script src="src/R.js"></script>
+	<script src="src/Utils.js"></script>
+	<script src="src/fishjoy.js"></script>
+	<script src="src/FishManager.js"></script>
+	<script src="src/FishGroup.js"></script>
+	<script src="src/views/Fish.js"></script>
+	<script src="src/views/Cannon.js"></script>
+	<script src="src/views/Bullet.js"></script>
+	<script src="src/views/Num.js"></script>
+	<script src="src/views/Player.js"></script>
 </head>
 
 <body>
-
-<div id="outer">
-	<div id="middle">
-		<div id="container" style="position:relative;width:980px;height:545px;top:-50%;margin:0 auto;"></div>
-		<div id="msg"></div>
-	</div>
-</div>
-<div id="fps" style="position:absolute;top:0;left:0;color:#fff;"></div>
-
+	<main id="viewport">
+		<section id="game-shell" aria-label="Game bắn cá">
+			<div id="container"></div>
+			<div id="game-vignette"></div>
+			<div id="game-hud">
+				<div class="hud-top">
+					<div class="hud-brand">ĐẠI DƯƠNG <span>SĂN CÁ</span></div>
+					<button id="home-btn" class="hud-btn">Menu</button>
+				</div>
+			</div>
+			<div id="loading-screen" class="screen">
+				<div class="bubble-field"></div>
+				<div class="loader-card"><span class="loader-fish">🐟</span>
+					<div class="loader-logo">ĐẠI DƯƠNG SĂN CÁ</div>
+					<div class="progress-track">
+						<div id="progress-bar"></div>
+					</div>
+					<p id="loading-text">Đang chuẩn bị đại dương... 0%</p>
+				</div>
+			</div>
+			<div id="menu-screen" class="screen is-hidden">
+				<div class="menu-shell">
+					<div class="menu-kicker">Sẵn sàng khám phá</div>
+					<div class="menu-card">
+						<h1 class="game-title">Đại Dương<br><span>Săn Cá</span></h1>
+						<p class="menu-copy">Lên nòng đại bác, săn cá hiếm và gom kho báu giữa lòng đại dương.</p>
+						<div class="feature-row">
+							<div class="feature-chip"><b>12</b> loài cá</div>
+							<div class="feature-chip"><b>7</b> cấp pháo</div>
+							<div class="feature-chip"><b>∞</b> niềm vui</div>
+						</div>
+						<button id="play-btn" class="primary-btn">▶ Bắt đầu chơi</button>
+						<div class="menu-actions"><button id="help-btn" class="icon-btn">? Cách chơi</button><button
+								id="fullscreen-btn" class="icon-btn">⛶ Toàn màn hình</button></div>
+					</div>
+				</div>
+				<div class="fish-silhouette" aria-hidden="true"></div>
+			</div>
+			<div id="help-modal" class="help-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+				<div class="help-panel">
+					<h2 id="help-title">Cách săn cá</h2>
+					<div class="help-step"><span>🎯</span><div><strong>Ngắm và bắn</strong><br>Chạm hoặc nhấp vào vị trí con cá.</div></div>
+					<div class="help-step"><span>⚙️</span><div><strong>Đổi cấp pháo</strong><br>Dùng nút − / + ở hai bên đại bác.</div></div>
+					<div class="help-step"><span>🪙</span><div><strong>Săn thưởng lớn</strong><br>Cá càng hiếm, số xu nhận được càng cao.</div></div>
+					<button id="close-help" class="close-help">ĐÃ HIỂU, CHIẾN THÔI!</button>
+				</div>
+			</div>
+		</section>
+	</main>
+	<div id="fps"></div>
+	<script>
+		(function () {
+			var shell = document.getElementById('game-shell');
+			function fitGame() {
+				var scale = Math.min(innerWidth / 1024, innerHeight / 768);
+				var left = (innerWidth - 1024 * scale) / 2;
+				var top = (innerHeight - 768 * scale) / 2;
+				shell.style.left = left + 'px';
+				shell.style.top = top + 'px';
+				shell.style.transform = 'scale(' + scale + ')';
+			}
+			addEventListener('resize', fitGame); fitGame();
+			document.getElementById('play-btn').onclick = function () { fish.game.startGame(); };
+			document.getElementById('home-btn').onclick = function () { fish.game.showMenu(); };
+			var helpModal = document.getElementById('help-modal');
+			document.getElementById('help-btn').onclick = function () { helpModal.className = 'help-modal'; };
+			document.getElementById('close-help').onclick = function () { helpModal.className = 'help-modal is-hidden'; };
+			helpModal.onclick = function (event) { if (event.target === helpModal) helpModal.className = 'help-modal is-hidden'; };
+			addEventListener('keydown', function (event) { if (event.key === 'Escape') helpModal.className = 'help-modal is-hidden'; });
+			document.getElementById('fullscreen-btn').onclick = function () { if (!document.fullscreenElement) { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); } else { document.exitFullscreen && document.exitFullscreen(); } };
+		})();
+	</script>
 </body>
 
 </html>
