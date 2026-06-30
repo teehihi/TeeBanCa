@@ -22,21 +22,23 @@ var Player = ns.Player = function(props)
 
 Player.prototype.init = function()
 {
-	var me = this, power = 1;
+	var me = this, power = 1, scale = game.hudScale || 1;
 	
 	this.cannon = new ns.Cannon(ns.R.cannonTypes[power]);
 	this.cannon.id = "cannon";
-	this.cannon.x = game.bottom.x + 425;
-	this.cannon.y = game.bottom.y + 60;
+	this.cannon.scaleX = this.cannon.scaleY = scale;
+	this.cannon.x = game.bottom.x + 425*scale;
+	this.cannon.y = game.bottom.y + 60*scale;
 	this.cannon.y = game.height - 10;
 	
 	this.cannonMinus = new Q.Button(ns.R.cannonMinus);
 	this.cannonMinus.id = "cannonMinus";
-	this.cannonMinus.x = game.bottom.x + 340;
-	this.cannonMinus.y = game.bottom.y + 36;
+	this.cannonMinus.scaleX = this.cannonMinus.scaleY = scale;
+	this.cannonMinus.x = game.bottom.x + 340*scale;
+	this.cannonMinus.y = game.bottom.y + 36*scale;
 	this.cannonMinus.onEvent = function(e)
 	{
-		if(e.type == game.events[1])
+		if(e.type == game.events[1] || e.type == "mouseup" || e.type == "touchend")
 		{
 			me.cannon.setPower(-1, true);
 		}
@@ -44,19 +46,21 @@ Player.prototype.init = function()
 	
 	this.cannonPlus = new Q.Button(ns.R.cannonPlus);
 	this.cannonPlus.id = "cannonPlus";
-	this.cannonPlus.x = this.cannonMinus.x + 140;
+	this.cannonPlus.scaleX = this.cannonPlus.scaleY = scale;
+	this.cannonPlus.x = this.cannonMinus.x + 140*scale;
 	this.cannonPlus.y = this.cannonMinus.y;
 	this.cannonPlus.onEvent = function(e)
 	{
-		if(e.type == game.events[1])
+		if(e.type == game.events[1] || e.type == "mouseup" || e.type == "touchend")
 		{
 			me.cannon.setPower(1, true);
 		}
 	};
 	
 	this.coinNum = new ns.Num({id:"coinNum", src:ns.R.numBlack, max:6, gap:3, autoAddZero:true});
-	this.coinNum.x = game.bottom.x + 20;
-	this.coinNum.y = game.bottom.y + 44;
+	this.coinNum.scaleX = this.coinNum.scaleY = scale;
+	this.coinNum.x = game.bottom.x + 20*scale;
+	this.coinNum.y = game.bottom.y + 44*scale;
 	this.updateCoin(this.coin);
 	
 	game.stage.addChild(this.cannon, this.cannonMinus, this.cannonPlus, this.coinNum);

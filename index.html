@@ -27,7 +27,7 @@
 			margin: 0;
 			overflow: hidden;
 			background: #020d1b;
-			font-family: Arial, "Helvetica Neue", sans-serif;
+			font-family: inherit;
 			color: #fff
 		}
 
@@ -49,7 +49,7 @@
 			position: absolute;
 			left: 0;
 			top: 0;
-			width: 1024px;
+			width: 1366px;
 			height: 768px;
 			overflow: hidden;
 			background: #063b62;
@@ -65,8 +65,9 @@
 
 		#container {
 			position: absolute;
-			inset: 0;
-			width: 1024px;
+			left: 0;
+			top: 0;
+			width: 1366px;
 			height: 768px;
 			overflow: hidden
 		}
@@ -96,55 +97,58 @@
 		}
 
 		#loading-screen {
-			background: linear-gradient(180deg, #042c4d 0%, #075c82 56%, #043451 100%)
+			background: linear-gradient(180deg, #00152b40, #00152bbf), url("images/startbg.jpg") center/cover
 		}
 
-		.bubble-field,
-		.bubble-field:before,
-		.bubble-field:after {
+		.bubble-field {
 			position: absolute;
 			inset: 0;
-			content: "";
-			background-image: radial-gradient(circle, #a9f6ff90 0 3px, transparent 4px);
-			background-size: 120px 120px;
-			animation: float 9s linear infinite
-		}
-
-		.bubble-field:before {
-			background-size: 190px 190px;
-			transform: translate(45px, 20px);
-			animation-duration: 14s
-		}
-
-		.bubble-field:after {
-			background-size: 270px 270px;
-			transform: translate(10px, 80px);
-			animation-duration: 20s
-		}
-
-		@keyframes float {
-			to {
-				background-position: 0 -240px
-			}
+			background: radial-gradient(ellipse at 50% 18%, #5acaff2e, transparent 45%)
 		}
 
 		.loader-card {
+			position: relative;
 			text-align: center;
 			z-index: 1;
-			width: min(520px, 80%)
+			width: 720px;
+			height: 268px;
+			padding: 55px 105px 44px;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			filter: drop-shadow(0 28px 25px #0009)
+		}
+
+		.loader-card:before {
+			display: none
 		}
 
 		.loader-logo {
-			font-size: 54px;
+			font-size: 40px;
 			font-weight: 900;
 			letter-spacing: 2px;
 			color: #fff;
 			text-shadow: 0 4px 0 #087db6, 0 8px 20px #00182e
 		}
 
+		.loader-logo span {
+			display: inline-block;
+			margin: 0 0 0 8px;
+			color: #ffd75a;
+			font-size: 36px;
+			text-shadow: 0 3px 0 #a65200, 0 7px 16px #00182e
+		}
+
 		.loader-fish {
-			font-size: 72px;
 			display: block;
+			position: absolute;
+			left: 50%;
+			top: -32px;
+			width: 78px;
+			height: 64px;
+			margin-left: -39px;
+			overflow: hidden;
+			color: transparent;
+			background: url("images/fish2.png") left top/78px auto no-repeat;
+			filter: drop-shadow(0 10px 10px #00152b99) drop-shadow(0 0 9px #60eaff77);
 			animation: swim 1.8s ease-in-out infinite
 		}
 
@@ -155,29 +159,29 @@
 		}
 
 		.progress-track {
-			height: 18px;
-			margin-top: 28px;
-			padding: 3px;
+			height: 24px;
+			margin-top: 24px;
+			padding: 5px;
 			border-radius: 99px;
-			background: #001a30aa;
-			border: 1px solid #9af7ff88;
-			box-shadow: inset 0 2px 8px #0008
+			background: #020e1f;
+			border: 3px solid #a96724;
+			box-shadow: 0 0 0 2px #f7d36a, inset 0 3px 8px #000b
 		}
 
 		#progress-bar {
 			width: 0;
 			height: 100%;
 			border-radius: 99px;
-			background: linear-gradient(90deg, #20c9ff, #78ffcf);
-			box-shadow: 0 0 16px #58faff;
+			background: linear-gradient(180deg, #8efffa, #10a8da 55%, #0875a9);
+			box-shadow: inset 0 2px #d9ffff, 0 0 12px #45e9ff;
 			transition: width .18s
 		}
 
 		#loading-text {
-			margin: 14px 0 0;
-			color: #d6fbff;
+			margin: 15px 0 0;
+			color: #ffe29a;
 			font-weight: 700;
-			letter-spacing: .5px
+			letter-spacing: 1px
 		}
 
 		#menu-screen {
@@ -194,7 +198,7 @@
 			justify-content: center;
 			width: 520px;
 			height: 100%;
-			padding: 44px 0 72px 64px
+			padding: 44px 0 72px 90px
 		}
 
 		.menu-kicker {
@@ -264,14 +268,7 @@
 			text-shadow: 0 3px 0 #b35d00, 0 6px 12px #001a38
 		}
 
-		.menu-copy {
-			color: #e4fbff;
-			margin: 25px 0 22px;
-			max-width: 430px;
-			font-size: 16px;
-			line-height: 1.65;
-			text-shadow: 0 2px 8px #001428
-		}
+
 
 		.feature-row {
 			display: flex;
@@ -293,11 +290,14 @@
 			box-shadow: inset 0 1px #ffffff18
 		}
 
-		.feature-chip b { color: #ffd968; font-size: 16px }
+		.feature-chip b {
+			color: #ffd968;
+			font-size: 16px
+		}
 
 		.primary-btn {
-			width: 330px;
-			height: 76px;
+			width: 400px;
+			height: 82px;
 			border: 0;
 			padding: 0 58px 2px;
 			color: #ffe79a;
@@ -322,28 +322,28 @@
 
 		.menu-actions {
 			display: flex;
-			gap: 12px;
-			margin: 15px auto 0;
-			width: 330px
+			gap: 14px;
+			margin: 20px 0 0;
+			width: 400px
 		}
 
 		.icon-btn {
 			flex: 1;
-			height: 52px;
+			height: 58px;
 			border: 0;
 			padding: 0 16px 1px;
 			color: #ffe79a;
 			background: url("images/menu-button.png") center/100% 100% no-repeat;
 			cursor: pointer;
 			font-weight: 900;
-			font-size: 14px;
+			font-size: 13px;
 			text-shadow: 0 2px 2px #001225, 0 0 7px #39dfff77;
 			transition: transform .15s, filter .15s
 		}
 
 		.fish-silhouette {
 			position: absolute;
-			right: 95px;
+			right: 210px;
 			top: 210px;
 			z-index: 1;
 			width: 174px;
@@ -354,7 +354,9 @@
 		}
 
 		@keyframes heroFish {
-			50% { transform: translate(-24px, -14px) rotate(-3deg) }
+			50% {
+				transform: translate(-24px, -14px) rotate(-3deg)
+			}
 		}
 
 		.help-modal {
@@ -368,21 +370,56 @@
 			transition: opacity .2s, visibility .2s
 		}
 
-		.help-modal.is-hidden { opacity: 0; visibility: hidden; pointer-events: none }
-
-		.help-panel {
-			width: 470px;
-			padding: 30px;
-			border: 2px solid #54e5ef80;
-			border-radius: 25px;
-			background: linear-gradient(160deg, #0b5275f5, #032442f7);
-			box-shadow: 0 24px 60px #0009, inset 0 1px #bffaff80
+		.help-modal.is-hidden {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none
 		}
 
-		.help-panel h2 { margin: 0 0 20px; color: #ffd75a; font-size: 28px }
-		.help-step { display: flex; gap: 15px; align-items: center; margin: 13px 0; color: #e8fdff; line-height: 1.4 }
-		.help-step span { flex: 0 0 42px; display: grid; place-items: center; height: 42px; border-radius: 13px; background: #0b8fc0; font-size: 20px; box-shadow: inset 0 1px #aefaff80 }
-		.close-help { width: 100%; height: 49px; margin-top: 16px; border: 1px solid #fff1a4; border-radius: 14px; background: linear-gradient(#ffe96c, #ed9f13); color: #542500; cursor: pointer; font-weight: 900; font-size: 15px }
+		.help-panel {
+			width: 650px;
+			height: 360px;
+			padding: 62px 100px 48px;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			filter: drop-shadow(0 24px 28px #000b)
+		}
+
+		.help-panel h2 {
+			margin: 0 0 20px;
+			color: #ffd75a;
+			font-size: 28px
+		}
+
+		.help-step {
+			display: flex;
+			gap: 15px;
+			align-items: center;
+			margin: 13px 0;
+			color: #e8fdff;
+			line-height: 1.4
+		}
+
+		.help-step span {
+			flex: 0 0 36px;
+			color: #ffd75a;
+			font-size: 18px;
+			font-weight: 900;
+			text-shadow: 0 2px #713800
+		}
+
+		.close-help {
+			width: 250px;
+			height: 58px;
+			display: block;
+			margin: 16px auto 0;
+			border: 0;
+			color: #ffe79a;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			cursor: pointer;
+			font-weight: 900;
+			font-size: 14px;
+			text-shadow: 0 2px #001225
+		}
 
 		.icon-btn:hover {
 			filter: brightness(1.16);
@@ -404,6 +441,34 @@
 
 		#game-hud.is-visible {
 			opacity: 1
+		}
+
+		.ammo-hitbox {
+			position: absolute;
+			bottom: 3px;
+			z-index: 3;
+			width: 72px;
+			height: 64px;
+			border: 0;
+			border-radius: 18px;
+			background: transparent;
+			color: transparent;
+			pointer-events: auto;
+			cursor: pointer;
+			touch-action: manipulation
+		}
+
+		.ammo-hitbox:focus-visible {
+			outline: 3px solid #ffe06b;
+			outline-offset: -6px
+		}
+
+		#ammo-minus {
+			left: 622px
+		}
+
+		#ammo-plus {
+			left: 790px
 		}
 
 		.hud-top {
@@ -454,6 +519,266 @@
 			display: none
 		}
 
+		/* Sảnh game desktop lấy cảm hứng từ bố cục iCá */
+		#menu-screen {
+			background: linear-gradient(180deg, #032d5670, #001a38a8), url("images/startbg.jpg") center/cover
+		}
+
+		#menu-screen:before {
+			position: absolute;
+			inset: 0;
+			content: "";
+			pointer-events: none;
+			background: radial-gradient(circle at 50% 34%, #69dcff38, transparent 34%), radial-gradient(circle at 50% 100%, #043a69bb, transparent 48%)
+		}
+
+		.menu-shell {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			padding: 0
+		}
+
+		.menu-kicker {
+			display: none
+		}
+
+		.menu-card {
+			position: absolute;
+			inset: 0;
+			width: auto
+		}
+
+		.game-title {
+			position: absolute;
+			left: 50%;
+			top: 25px;
+			width: 720px;
+			height: 250px;
+			margin: 0;
+			overflow: hidden;
+			transform: translateX(-50%);
+			background: url("images/game-logo-cropped.png") center/contain no-repeat;
+			text-indent: -9999px;
+			white-space: nowrap;
+			filter: drop-shadow(0 13px 18px #001329a8)
+		}
+
+		.game-title br {
+			display: inline
+		}
+
+		.game-title span {
+			display: inline
+		}
+
+		.menu-copy {
+			position: absolute;
+			left: 50%;
+			top: 260px;
+			width: 520px;
+			max-width: none;
+			margin: 0;
+			transform: translateX(-50%);
+			text-align: center;
+			font-size: 14px;
+			color: #dffaff
+		}
+
+		.feature-row {
+			position: absolute;
+			right: 34px;
+			top: 24px;
+			gap: 8px;
+			margin: 0
+		}
+
+		.feature-chip {
+			justify-content: center;
+			width: 118px;
+			height: 48px;
+			padding: 0 14px 1px;
+			border: 0;
+			border-radius: 0;
+			background: url("images/stat-panel-cropped.png") center/100% 100% no-repeat;
+			box-shadow: none;
+			clip-path: none;
+			font-size: 11px;
+			text-shadow: 0 2px 2px #001225
+		}
+
+		.feature-chip b {
+			color: #ffe27a;
+			font-size: 15px;
+			text-shadow: 0 2px #753a00
+		}
+
+		.player-card {
+			position: absolute;
+			left: 28px;
+			top: 20px;
+			z-index: 4;
+			display: grid;
+			grid-template-columns: 58px auto;
+			grid-template-rows: auto auto;
+			gap: 2px 10px;
+			width: 280px;
+			height: 88px;
+			padding: 18px 28px 15px 32px;
+			border: 0;
+			border-radius: 0;
+			background: url("images/player-panel-cropped.png") center/100% 100% no-repeat;
+			box-shadow: none;
+			clip-path: none
+		}
+
+		.player-avatar {
+			grid-row: 1/3;
+			width: 48px;
+			height: 48px;
+			border: 2px solid #f8c94f;
+			border-radius: 50%;
+			background: #032b4d url("images/fish2.png") 50% 0/59px auto no-repeat;
+			box-shadow: inset 0 0 8px #00162c, 0 2px 0 #6e3500
+		}
+
+		.player-name {
+			align-self: end;
+			font-weight: 900;
+			font-size: 12px;
+			letter-spacing: .2px;
+			text-shadow: 0 2px #001225
+		}
+
+		.player-coins {
+			color: #ffe36f;
+			font-weight: 900;
+			font-size: 15px;
+			text-shadow: 0 2px #744000
+		}
+
+		.player-coins:before {
+			content: "●";
+			margin-right: 7px;
+			color: #ffd128
+		}
+
+		.fish-silhouette {
+			left: 50%;
+			right: auto;
+			top: 285px;
+			width: 220px;
+			height: 160px;
+			transform: translateX(-50%);
+			background-size: 220px auto;
+			filter: drop-shadow(0 24px 18px #00162ca8) drop-shadow(0 0 24px #5ce6ff8c);
+			animation: lobbyFish 4s ease-in-out infinite
+		}
+
+		@keyframes lobbyFish {
+			50% {
+				transform: translate(-50%, -13px) rotate(-3deg)
+			}
+		}
+
+		.primary-btn,
+		.icon-btn {
+			border: 4px solid #fff9b6;
+			border-radius: 50%;
+			background: radial-gradient(circle at 35% 22%, #d9ffff 0 4%, #60e7ff 18%, #118ec9 54%, #054a83 76%, #032a55 100%);
+			box-shadow: 0 0 0 7px #0b659c, 0 0 0 10px #50e7ff, inset 0 9px 16px #ffffff87, inset 0 -14px 20px #001d4d99, 0 16px 25px #00162ca8;
+			color: #fff8c2;
+			-webkit-text-stroke: 1px #174a79;
+			text-shadow: 0 3px 0 #123e6c, 0 6px 8px #00162c
+		}
+
+		.primary-btn {
+			position: absolute;
+			left: 50%;
+			bottom: 42px;
+			z-index: 3;
+			width: 190px;
+			height: 190px;
+			padding: 0 24px;
+			transform: translateX(-50%);
+			font-size: 25px;
+			line-height: 1.12
+		}
+
+		.primary-btn:hover {
+			transform: translateX(-50%) scale(1.045)
+		}
+
+		.primary-btn:active {
+			transform: translateX(-50%) scale(.98)
+		}
+
+		.menu-actions {
+			position: absolute;
+			left: 50%;
+			bottom: 52px;
+			display: contents;
+			width: auto;
+			margin: 0
+		}
+
+		.icon-btn {
+			position: absolute;
+			bottom: 58px;
+			z-index: 2;
+			width: 138px;
+			height: 138px;
+			padding: 0 19px;
+			font-size: 17px;
+			line-height: 1.15
+		}
+
+		#help-btn {
+			left: calc(50% - 270px)
+		}
+
+		#fullscreen-btn {
+			right: calc(50% - 270px)
+		}
+
+		/* Giữ bộ nút đá san hô nguyên bản trong bố cục lobby mới */
+		.primary-btn,
+		.icon-btn {
+			border: 0;
+			border-radius: 0;
+			background: url("images/menu-button.png") center/100% 100% no-repeat;
+			box-shadow: none;
+			color: #ffe79a;
+			-webkit-text-stroke: 0;
+			text-shadow: 0 3px 2px #001225, 0 0 10px #39dfff77
+		}
+
+		.primary-btn {
+			bottom: 206px;
+			width: 330px;
+			height: 87px;
+			padding: 0 52px 2px;
+			font-size: 22px;
+			line-height: 1
+		}
+
+		.icon-btn {
+			bottom: 134px;
+			width: 220px;
+			height: 58px;
+			padding: 0 30px 1px;
+			font-size: 15px;
+			line-height: 1
+		}
+
+		#help-btn {
+			left: calc(50% - 228px)
+		}
+
+		#fullscreen-btn {
+			right: calc(50% - 228px)
+		}
 	</style>
 	<script src="js/quark.base-1.0.0.alpha.min.js"></script>
 	<script src="src/R.js"></script>
@@ -478,11 +803,13 @@
 					<div class="hud-brand">ĐẠI DƯƠNG <span>SĂN CÁ</span></div>
 					<button id="home-btn" class="hud-btn">Menu</button>
 				</div>
+				<button id="ammo-minus" class="ammo-hitbox" aria-label="Giảm cấp đạn">−</button>
+				<button id="ammo-plus" class="ammo-hitbox" aria-label="Tăng cấp đạn">+</button>
 			</div>
 			<div id="loading-screen" class="screen">
 				<div class="bubble-field"></div>
 				<div class="loader-card"><span class="loader-fish">🐟</span>
-					<div class="loader-logo">ĐẠI DƯƠNG SĂN CÁ</div>
+					<div class="loader-logo">ĐẠI DƯƠNG <span>SĂN CÁ</span></div>
 					<div class="progress-track">
 						<div id="progress-bar"></div>
 					</div>
@@ -490,29 +817,41 @@
 				</div>
 			</div>
 			<div id="menu-screen" class="screen is-hidden">
+				<div class="player-card">
+					<div class="player-avatar" aria-hidden="true"></div>
+					<div class="player-name">Thợ săn đại dương</div>
+					<div class="player-coins">10.000</div>
+				</div>
 				<div class="menu-shell">
 					<div class="menu-kicker">Sẵn sàng khám phá</div>
 					<div class="menu-card">
-						<h1 class="game-title">Đại Dương<br><span>Săn Cá</span></h1>
-						<p class="menu-copy">Lên nòng đại bác, săn cá hiếm và gom kho báu giữa lòng đại dương.</p>
+						<h1 class="game-title"></h1>
+
 						<div class="feature-row">
 							<div class="feature-chip"><b>12</b> loài cá</div>
 							<div class="feature-chip"><b>7</b> cấp pháo</div>
-							<div class="feature-chip"><b>∞</b> niềm vui</div>
+							<div class="feature-chip"><b>2</b> boss lớn</div>
 						</div>
-						<button id="play-btn" class="primary-btn">▶ Bắt đầu chơi</button>
-						<div class="menu-actions"><button id="help-btn" class="icon-btn">? Cách chơi</button><button
-								id="fullscreen-btn" class="icon-btn">⛶ Toàn màn hình</button></div>
+						<button id="play-btn" class="primary-btn">▶ CHƠI NGAY</button>
+						<div class="menu-actions"><button id="help-btn" class="icon-btn">? CÁCH CHƠI</button><button
+								id="fullscreen-btn" class="icon-btn">⛶ TOÀN MÀN HÌNH</button></div>
 					</div>
 				</div>
 				<div class="fish-silhouette" aria-hidden="true"></div>
 			</div>
-			<div id="help-modal" class="help-modal is-hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+			<div id="help-modal" class="help-modal is-hidden" role="dialog" aria-modal="true"
+				aria-labelledby="help-title">
 				<div class="help-panel">
 					<h2 id="help-title">Cách săn cá</h2>
-					<div class="help-step"><span>🎯</span><div><strong>Ngắm và bắn</strong><br>Chạm hoặc nhấp vào vị trí con cá.</div></div>
-					<div class="help-step"><span>⚙️</span><div><strong>Đổi cấp pháo</strong><br>Dùng nút − / + ở hai bên đại bác.</div></div>
-					<div class="help-step"><span>🪙</span><div><strong>Săn thưởng lớn</strong><br>Cá càng hiếm, số xu nhận được càng cao.</div></div>
+					<div class="help-step"><span>01</span>
+						<div><strong>Ngắm và bắn</strong><br>Chạm hoặc nhấp vào vị trí con cá.</div>
+					</div>
+					<div class="help-step"><span>02</span>
+						<div><strong>Đổi cấp pháo</strong><br>Dùng nút − / + ở hai bên đại bác.</div>
+					</div>
+					<div class="help-step"><span>03</span>
+						<div><strong>Săn thưởng lớn</strong><br>Cá càng hiếm, số xu nhận được càng cao.</div>
+					</div>
 					<button id="close-help" class="close-help">ĐÃ HIỂU, CHIẾN THÔI!</button>
 				</div>
 			</div>
@@ -523,16 +862,22 @@
 		(function () {
 			var shell = document.getElementById('game-shell');
 			function fitGame() {
-				var scale = Math.min(innerWidth / 1024, innerHeight / 768);
-				var left = (innerWidth - 1024 * scale) / 2;
-				var top = (innerHeight - 768 * scale) / 2;
-				shell.style.left = left + 'px';
-				shell.style.top = top + 'px';
-				shell.style.transform = 'scale(' + scale + ')';
+				var scaleX = innerWidth / 1366;
+				var scaleY = innerHeight / 768;
+				shell.style.left = '0';
+				shell.style.top = '0';
+				shell.style.transform = 'scale(' + scaleX + ',' + scaleY + ')';
 			}
 			addEventListener('resize', fitGame); fitGame();
 			document.getElementById('play-btn').onclick = function () { fish.game.startGame(); };
 			document.getElementById('home-btn').onclick = function () { fish.game.showMenu(); };
+			function changeAmmo(amount, event) {
+				event.preventDefault();
+				event.stopPropagation();
+				if (fish.game.player && fish.game.player.cannon) fish.game.player.cannon.setPower(amount, true);
+			}
+			document.getElementById('ammo-minus').onclick = function (event) { changeAmmo(-1, event); };
+			document.getElementById('ammo-plus').onclick = function (event) { changeAmmo(1, event); };
 			var helpModal = document.getElementById('help-modal');
 			document.getElementById('help-btn').onclick = function () { helpModal.className = 'help-modal'; };
 			document.getElementById('close-help').onclick = function () { helpModal.className = 'help-modal is-hidden'; };

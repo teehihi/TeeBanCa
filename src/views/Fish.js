@@ -100,7 +100,7 @@ Fish.prototype.update = function()
 				tween.target.parent.removeChild(tween.target);
 			}});
 			
-			var tx = game.bottom.x + 100, ty = game.height;
+			var tx = game.bottom.x + 100*(game.hudScale || 1), ty = game.height;
 			Q.Tween.to(coin, {x:tx, y:ty}, {time:800, onComplete:function(tween)
 			{
 				tween.target.parent.removeChild(tween.target);

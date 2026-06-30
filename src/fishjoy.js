@@ -14,7 +14,7 @@ var ns = Q.use("fish");
 var game = ns.game = 
 {	
 	container: null,
-	width: 1024,
+	width: 1366,
 	height: 768,
 	fps: 60,
 	frames: 0,
@@ -22,7 +22,8 @@ var game = ns.game =
 	events: Q.supportTouch ? ["touchstart", "touchend"] : ["mousedown", "mouseup"],
 	
 	fireInterval: 30,
-	fireCount: 0
+	fireCount: 0,
+	hudScale: 1.2
 };
 
 game.load = function(container)
@@ -33,9 +34,8 @@ game.load = function(container)
 	if(params.fps) this.fps = params.fps;
 	this.fireInterval = this.fps*0.5;
 	
-	// Assets của game được thiết kế theo khung 1024x768. Giữ hệ tọa độ cố định
-	// và để lớp giao diện bên ngoài scale toàn bộ game giúp hình ảnh không bị lệch.
-	this.width = 1024;
+	// Sân chơi 16:9. Asset 4:3 được cover và crop cân đối, không kéo méo.
+	this.width = 1366;
 	this.height = 768;
 
 	if(params.width) this.width = Number(params.width) || this.width;
@@ -162,7 +162,16 @@ game.startup = function()
 
 game.initUI = function()
 {
-	this.bg = new Q.Bitmap({id:"bg", image:ns.R.mainbg, transformEnabled:false});
+	var sourceWidth = ns.R.mainbg.width, sourceHeight = ns.R.mainbg.height;
+	var bgScale = Math.max(this.width/sourceWidth, this.height/sourceHeight);
+	this.bg = new Q.Bitmap({
+		id:"bg",
+		image:ns.R.mainbg,
+		x:(this.width-sourceWidth*bgScale)/2,
+		y:(this.height-sourceHeight*bgScale)/2,
+		scaleX:bgScale,
+		scaleY:bgScale
+	});
 	
 	this.fishContainer = new Q.DisplayObjectContainer({id:"fishContainer", width:this.width, height:this.height, eventChildren:false, transformEnabled:false});
 	this.fishContainer.onEvent = function(e)
@@ -176,9 +185,9 @@ game.initUI = function()
 		
 	this.bottom = new Q.Bitmap(ns.R.bottombar);
 	this.bottom.id = "bottom";
-	this.bottom.x = this.width - this.bottom.width >> 1;
-	this.bottom.y = this.height - this.bottom.height + 2;
-	this.bottom.transformEnabled = false;
+	this.bottom.scaleX = this.bottom.scaleY = this.hudScale;
+	this.bottom.x = (this.width - this.bottom.width*this.hudScale) >> 1;
+	this.bottom.y = this.height - this.bottom.height*this.hudScale;
 	
 	this.stage.addChild(this.bg, this.fishContainer, this.bottom);	
 };

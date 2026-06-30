@@ -15,6 +15,7 @@ R.sources =
 	//{id:"shark", size:50, src:"images/shark-hd.png?"+Math.random()},
 	{id:"mainbg", size:456, src:"images/game_bg_2_hd.jpg?"+Math.random()},
 	{id:"bottom", size:50, src:"images/bottom.png?"+Math.random()},
+	{id:"bottomBar", size:35, src:"images/bottom-bar.png?"+Math.random()},
 	{id:"fish1", size:6, src:"images/fish1.png?"+Math.random()},
 	{id:"fish2", size:16, src:"images/fish2.png?"+Math.random()},
 	{id:"fish3", size:11, src:"images/fish3.png?"+Math.random()},
@@ -25,6 +26,9 @@ R.sources =
 	{id:"fish8", size:100, src:"images/fish8.png?"+Math.random()},
 	{id:"fish9", size:104, src:"images/fish9.png?"+Math.random()},
 	{id:"fish10", size:121, src:"images/fish10.png?"+Math.random()},
+	{id:"fish11", size:35, src:"images/fish11.png?"+Math.random()},
+	{id:"fish12", size:35, src:"images/fish12.png?"+Math.random()},
+	{id:"fish13", size:35, src:"images/fish13.png?"+Math.random()},
 	{id:"shark1", size:287, src:"images/shark1.png?"+Math.random()},
 	{id:"shark2", size:382, src:"images/shark2.png?"+Math.random()},
 	{id:"cannon1", size:11, src:"images/cannon1.png?"+Math.random()},
@@ -34,6 +38,9 @@ R.sources =
 	{id:"cannon5", size:13, src:"images/cannon5.png?"+Math.random()},
 	{id:"cannon6", size:15, src:"images/cannon6.png?"+Math.random()},
 	{id:"cannon7", size:17, src:"images/cannon7.png?"+Math.random()},
+	{id:"cannon8", size:20, src:"images/cannon8-final.png?"+Math.random()},
+	{id:"cannon9", size:20, src:"images/cannon9-final.png?"+Math.random()},
+	{id:"cannon10", size:22, src:"images/cannon10-final.png?"+Math.random()},
 	{id:"bullet", size:8, src:"images/bullet.png?"+Math.random()},
 	{id:"web", size:93, src:"images/web.png?"+Math.random()},
 	{id:"numBlack", size:1, src:"images/number_black.png?"+Math.random()},
@@ -53,8 +60,10 @@ R.initResources = function()
 {
 	this.mainbg = this.getImage("mainbg");
 	this.bottom = this.getImage("bottom");
+	this.bottomBar = this.getImage("bottomBar");
 	
-	this.bottombar = {image:this.bottom, rect:[0,0,765,72]};
+	// Ảnh HUD đã cắt riêng, tránh lộ các phần khác của sprite sheet bottom.png.
+	this.bottombar = {image:this.bottomBar, rect:[0,0,765,72]};
 	this.cannonMinus = {image:this.bottom, up:{rect:[132,72,44,31]}, down:{rect:[88,72,44,31]}, width:44, height:31};
 	this.cannonPlus = {image:this.bottom, up:{rect:[44,72,44,31]}, down:{rect:[0,72,44,31]}, width:44, height:31};
 	
@@ -262,6 +271,45 @@ R.initResources = function()
 	{rect:[0,1683,178,187], jump:"capture"}
 	], polyArea:[{x:20, y:30}, {x:170, y:30}, {x:170, y:120}, {x:20, y:120}], 
 	mixin:{coin:60, captureRate:0.10, maxNumGroup:2, minSpeed:0.5, maxSpeed:0.8, regX:100, regY:80, useFrames:true, interval:10}};
+
+	var fish11 = {image:this.getImage("fish11"),
+	frames:[
+	{rect:[0,0,170,124], label:"swim"},
+	{rect:[0,0,170,124]},
+	{rect:[0,0,170,124]},
+	{rect:[0,0,170,124], jump:"swim"},
+	{rect:[0,0,170,124], label:"capture"},
+	{rect:[0,0,170,124]},
+	{rect:[0,0,170,124]},
+	{rect:[0,0,170,124], jump:"capture"}
+	], polyArea:[{x:12,y:15},{x:165,y:15},{x:165,y:110},{x:12,y:110}],
+	mixin:{coin:70, captureRate:0.09, maxNumGroup:2, minSpeed:0.5, maxSpeed:0.85, regX:118, regY:62, useFrames:true, interval:10}};
+
+	var fish12 = {image:this.getImage("fish12"),
+	frames:[
+	{rect:[0,0,180,135], label:"swim"},
+	{rect:[0,0,180,135]},
+	{rect:[0,0,180,135]},
+	{rect:[0,0,180,135], jump:"swim"},
+	{rect:[0,0,180,135], label:"capture"},
+	{rect:[0,0,180,135]},
+	{rect:[0,0,180,135]},
+	{rect:[0,0,180,135], jump:"capture"}
+	], polyArea:[{x:10,y:10},{x:175,y:10},{x:175,y:125},{x:10,y:125}],
+	mixin:{coin:80, captureRate:0.08, maxNumGroup:2, minSpeed:0.5, maxSpeed:0.8, regX:122, regY:68, useFrames:true, interval:10}};
+
+	var fish13 = {image:this.getImage("fish13"),
+	frames:[
+	{rect:[0,0,220,99], label:"swim"},
+	{rect:[0,0,220,99]},
+	{rect:[0,0,220,99]},
+	{rect:[0,0,220,99], jump:"swim"},
+	{rect:[0,0,220,99], label:"capture"},
+	{rect:[0,0,220,99]},
+	{rect:[0,0,220,99]},
+	{rect:[0,0,220,99], jump:"capture"}
+	], polyArea:[{x:8,y:10},{x:215,y:10},{x:215,y:90},{x:8,y:90}],
+	mixin:{coin:90, captureRate:0.06, maxNumGroup:1, minSpeed:0.7, maxSpeed:1.0, regX:150, regY:50, useFrames:true, interval:10}};
 	
 	var shark1 = {image:this.getImage("shark1"), 
 	frames:[
@@ -359,9 +407,27 @@ R.initResources = function()
 	{rect:[0,282,74,94]},
 	{rect:[0,376,74,94], stop:1}
 	], mixin:{regX:37, regY:60, useFrames:true, interval:3, power:7}};
+
+	var cannon8 = {image:this.getImage("cannon8"),
+	frames:[
+	{rect:[0,0,80,110]}, {rect:[0,0,80,110]}, {rect:[0,0,80,110]},
+	{rect:[0,0,80,110]}, {rect:[0,0,80,110], stop:1}
+	], mixin:{regX:40, regY:72, useFrames:true, interval:3, power:8}};
+
+	var cannon9 = {image:this.getImage("cannon9"),
+	frames:[
+	{rect:[0,0,82,114]}, {rect:[0,0,82,114]}, {rect:[0,0,82,114]},
+	{rect:[0,0,82,114]}, {rect:[0,0,82,114], stop:1}
+	], mixin:{regX:41, regY:75, useFrames:true, interval:3, power:9}};
+
+	var cannon10 = {image:this.getImage("cannon10"),
+	frames:[
+	{rect:[0,0,84,118]}, {rect:[0,0,84,118]}, {rect:[0,0,84,118]},
+	{rect:[0,0,84,118]}, {rect:[0,0,84,118], stop:1}
+	], mixin:{regX:42, regY:78, useFrames:true, interval:3, power:10}};
 	
-	this.fishTypes = [null, fish1, fish2, fish3, fish4, fish5, fish6, fish8, fish9, fish10, fish7, shark1, shark2];
-	this.cannonTypes = [null, cannon1, cannon2, cannon3, cannon4, cannon5, cannon6, cannon7];
+	this.fishTypes = [null, fish1, fish2, fish3, fish4, fish5, fish6, fish8, fish9, fish10, fish11, fish12, fish13, fish7, shark1, shark2];
+	this.cannonTypes = [null, cannon1, cannon2, cannon3, cannon4, cannon5, cannon6, cannon7, cannon8, cannon9, cannon10];
 		
 	var bullet = this.getImage("bullet");
 	this.bullets = [
@@ -371,7 +437,10 @@ R.initResources = function()
 	{image:bullet, rect:[30,82,29,33], regX:14, regY:16},
 	{image:bullet, rect:[0,82,30,34], regX:15, regY:17},
 	{image:bullet, rect:[30,0,31,35], regX:15, regY:17},
-	{image:bullet, rect:[0,44,32,38], regX:16, regY:19}
+	{image:bullet, rect:[0,44,32,38], regX:16, regY:19},
+	{image:bullet, rect:[0,44,32,38], regX:16, regY:19, scaleX:1.08, scaleY:1.08},
+	{image:bullet, rect:[0,44,32,38], regX:16, regY:19, scaleX:1.16, scaleY:1.16},
+	{image:bullet, rect:[0,44,32,38], regX:16, regY:19, scaleX:1.25, scaleY:1.25}
 	];
 	
 	var web = this.getImage("web");
